@@ -86,24 +86,18 @@ class CPU:
 
     def LDI(self, opa, opb):
         self.reg[opa] = opb
-        print('f',opa, self.reg[opa])
 
     def PRN(self, opa):
         print(self.reg[opa])
 
     def JMP(self, opa):
-        self.pc = self.reg[opa]
-        print('c', self.pc)
+        self.pc = self.reg[opa] - 2
 
     def JEQ(self, opa):
-        print('a', self.pc)
-        print('b', self.fl[-1])
         if self.fl[-1] == '1': 
             self.JMP(opa)
 
     def JNE(self, opa):
-        print('d', self.pc)
-        print('e', self.fl[-1])
         if self.fl[-1] == '0':
             self.JMP(opa)
 
@@ -113,7 +107,6 @@ class CPU:
 
         while running == True:
             IR = self.ram_read(self.pc)
-            print('IR',IR)
             operand_a = self.ram_read(self.pc + 1)
             operand_b = self.ram_read(self.pc + 2)
             if IR == 130:
@@ -133,7 +126,6 @@ class CPU:
             elif IR == 86:
                 self.JNE(operand_a)
             num_ops = (IR & 0b11000000) >> 6
-            print('num_ops', num_ops)
             move_pc_dist = num_ops + 1
             self.pc += move_pc_dist
 
